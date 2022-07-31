@@ -1,9 +1,11 @@
 import React from 'react'
 import { useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
 
 const LoginBox = (props) => {
     const [login, setlogin] = useState('');
     const [senha, setSenha] = useState('');
+    const [wrong, setWrong] = useState(false);
 
     const data = props.data;
 
@@ -12,14 +14,17 @@ const LoginBox = (props) => {
         data.empregados.map((user) => {
             if (login == user.login) {
                 console.log("Login encontrado")
+
                 if (senha == user.senha) {
                     console.log("LOGADO COM SUCESSO");
                     props.userLevel(user.cargo)
                     props.setUser(user);
                     props.callback(true);
                 } else {
-                    console.log("SENHA ERRADA!");
+                    console.log("Senha errada");
                 }
+            } else {
+                setWrong(true);
             }
         })
     }
@@ -67,7 +72,7 @@ const LoginBox = (props) => {
 
                     <button
                         type='submit'
-                        className='mt-4 bg-green-500 uppercase py-4 rounded font-bold text-sm hover:bg-green-700 transition-colors'>
+                        className={`mt-4 bg-green-500 uppercase py-4 rounded font-bold text-sm hover:bg-green-700 transition-colors ${wrong && 'bg-red-500 hover:bg-red-700'}`}>
                         Entrar
                     </button>
                 </form>
